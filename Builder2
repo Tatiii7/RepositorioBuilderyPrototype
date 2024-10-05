@@ -1,0 +1,84 @@
+//Builder2
+// Product Class
+public class House
+{
+    public string Walls { get; set; }
+    public string Roof { get; set; }
+    public string Windows { get; set; }
+
+    public override string ToString()
+    {
+        return $"House with {Walls} walls, {Roof} roof, and {Windows} windows.";
+    }
+}
+
+// Builder Interface
+public interface IHouseBuilder
+{
+    void BuildWalls();
+    void BuildRoof();
+    void BuildWindows();
+    House GetHouse();
+}
+
+// Concrete Builder
+public class ConcreteHouseBuilder : IHouseBuilder
+{
+    private House house = new House();
+
+    public void BuildWalls()
+    {
+        house.Walls = "Brick";
+    }
+
+    public void BuildRoof()
+    {
+        house.Roof = "Concrete";
+    }
+
+    public void BuildWindows()
+    {
+        house.Windows = "Glass";
+    }
+
+    public House GetHouse()
+    {
+        return house;
+    }
+}
+
+// Director
+public class HouseDirector
+{
+    private IHouseBuilder houseBuilder;
+
+    public HouseDirector(IHouseBuilder builder)
+    {
+        houseBuilder = builder;
+    }
+
+    public void BuildHouse()
+    {
+        houseBuilder.BuildWalls();
+        houseBuilder.BuildRoof();
+        houseBuilder.BuildWindows();
+    }
+
+    public House GetHouse()
+    {
+        return houseBuilder.GetHouse();
+    }
+}
+
+// Usage
+class Program
+{
+    static void Main(string[] args)
+    {
+        IHouseBuilder builder = new ConcreteHouseBuilder();
+        HouseDirector director = new HouseDirector(builder);
+        director.BuildHouse();
+        House house = director.GetHouse();
+        Console.WriteLine(house);
+    }
+}
