@@ -1,0 +1,109 @@
+//Prototype2
+// Prototype Interface
+public abstract class Animal
+{
+    public string Name { get; set; }
+
+    public abstract Animal Clone();
+
+    public override string ToString()
+    {
+        return $"Animal: {Name}";
+    }
+}
+
+// Concrete Prototype
+public class Sheep : Animal
+{
+    public Sheep(string name)
+    {
+        Name = name;
+    }
+
+    public override Animal Clone()
+    {
+        return (Sheep)this.MemberwiseClone();  // Creates a shallow copy
+    }
+}
+
+// Usage
+class Program
+{
+    static void Main(string[] args)
+    {
+        Sheep originalSheep = new Sheep("Dolly");
+        Sheep clonedSheep = (Sheep)originalSheep.Clone();
+
+        Console.WriteLine(originalSheep);  // Output: Animal: Dolly
+        Console.WriteLine(clonedSheep);    // Output: Animal: Dolly
+    }
+}
+
+EJEMPLO 2
+
+// Prototype Interface
+public abstract class Robot
+{
+    public string Model { get; set; }
+    public string Weapon { get; set; }
+
+    public abstract Robot Clone();
+
+    public override string ToString()
+    {
+        return $"Robot Model: {Model}, Weapon: {Weapon}";
+    }
+}
+
+// Concrete Prototype
+public class CombatRobot : Robot
+{
+    public CombatRobot(string model, string weapon)
+    {
+        Model = model;
+        Weapon = weapon;
+    }
+
+    // Shallow copy using MemberwiseClone
+    public override Robot Clone()
+    {
+        return (CombatRobot)this.MemberwiseClone();
+    }
+}
+
+// Another Concrete Prototype
+public class WorkerRobot : Robot
+{
+    public WorkerRobot(string model, string tool)
+    {
+        Model = model;
+        Weapon = tool;
+    }
+
+    public override Robot Clone()
+    {
+        return (WorkerRobot)this.MemberwiseClone();
+    }
+}
+
+// Usage
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Original Combat Robot
+        CombatRobot originalRobot = new CombatRobot("X-101", "Laser Gun");
+        Console.WriteLine(originalRobot);
+
+        // Clone the robot
+        CombatRobot clonedRobot = (CombatRobot)originalRobot.Clone();
+        Console.WriteLine(clonedRobot);
+
+        // Original Worker Robot
+        WorkerRobot workerRobot = new WorkerRobot("W-300", "Hammer");
+        Console.WriteLine(workerRobot);
+
+        // Clone the worker robot
+        WorkerRobot clonedWorker = (WorkerRobot)workerRobot.Clone();
+        Console.WriteLine(clonedWorker);
+    }
