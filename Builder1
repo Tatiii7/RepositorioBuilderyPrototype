@@ -1,0 +1,129 @@
+//Builder
+// Product Class
+public class Computer
+{
+    public string CPU { get; set; }
+    public string RAM { get; set; }
+    public string Storage { get; set; }
+    public string GPU { get; set; }
+
+    public override string ToString()
+    {
+        return $"Computer [CPU={CPU}, RAM={RAM}, Storage={Storage}, GPU={GPU}]";
+    }
+}
+
+// Builder Interface
+public interface IComputerBuilder
+{
+    void BuildCPU();
+    void BuildRAM();
+    void BuildStorage();
+    void BuildGPU();
+    Computer GetComputer();
+}
+
+// Concrete Builder
+public class GamingComputerBuilder : IComputerBuilder
+{
+    private Computer computer = new Computer();
+
+    public void BuildCPU()
+    {
+        computer.CPU = "Intel Core i9";
+    }
+
+    public void BuildRAM()
+    {
+        computer.RAM = "32GB";
+    }
+
+    public void BuildStorage()
+    {
+        computer.Storage = "1TB SSD";
+    }
+
+    public void BuildGPU()
+    {
+        computer.GPU = "NVIDIA RTX 3090";
+    }
+
+    public Computer GetComputer()
+    {
+        return computer;
+    }
+}
+
+// Another Concrete Builder
+public class OfficeComputerBuilder : IComputerBuilder
+{
+    private Computer computer = new Computer();
+
+    public void BuildCPU()
+    {
+        computer.CPU = "Intel Core i5";
+    }
+
+    public void BuildRAM()
+    {
+        computer.RAM = "16GB";
+    }
+
+    public void BuildStorage()
+    {
+        computer.Storage = "512GB SSD";
+    }
+
+    public void BuildGPU()
+    {
+        computer.GPU = "Integrated Graphics";
+    }
+
+    public Computer GetComputer()
+    {
+        return computer;
+    }
+}
+
+// Director Class
+public class ComputerDirector
+{
+    private IComputerBuilder builder;
+
+    public ComputerDirector(IComputerBuilder builder)
+    {
+        this.builder = builder;
+    }
+
+    public void BuildComputer()
+    {
+        builder.BuildCPU();
+        builder.BuildRAM();
+        builder.BuildStorage();
+        builder.BuildGPU();
+    }
+
+    public Computer GetComputer()
+    {
+        return builder.GetComputer();
+    }
+}
+
+// Usage
+class Program
+{
+    static void Main(string[] args)
+    {
+        IComputerBuilder gamingBuilder = new GamingComputerBuilder();
+        ComputerDirector director = new ComputerDirector(gamingBuilder);
+        director.BuildComputer();
+        Computer gamingPC = director.GetComputer();
+        Console.WriteLine(gamingPC);
+
+        IComputerBuilder officeBuilder = new OfficeComputerBuilder();
+        director = new ComputerDirector(officeBuilder);
+        director.BuildComputer();
+        Computer officePC = director.GetComputer();
+        Console.WriteLine(officePC);
+    }
+}
